@@ -1,0 +1,13 @@
+node_modules/
+.next/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+graphify-out/
+.code-review-graph/
+*.tsbuildinfo
+sync_graph.sh
+.agents
+gcloud_deployment_and_keys_guide.md
