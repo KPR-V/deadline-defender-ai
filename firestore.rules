@@ -1,0 +1,123 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // =========================================================================
+    // HELPER FUNCTIONS
+    // =========================================================================
+    
+    // Checks if the request is authenticated and belongs to the specified user ID.
+    // Rule 1, 2, 3: Enforces strict user ownership and denies unauthenticated access.
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    // Helper to validate string field types if the field is provided in the write request.
+    function isValidStringIfPresent(field) {
+      return !(field in request.resource.data) || request.resource.data[field] is string;
+    }
+
+    // Helper to validate number field types if the field is provided in the write request.
+    function isValidNumberIfPresent(field) {
+      return !(field in request.resource.data) || request.resource.data[field] is number;
+    }
+
+    // =========================================================================
+    // DEFAULT DENY ALL
+    // =========================================================================
+    // Protects all unmapped documents against unauthenticated or accidental access.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // =========================================================================
+    // USER PROFILES & NESTED COLLECTIONS
+    // =========================================================================
+    match /users/{userId} {
+      // Only the authenticated user can read or write their own profile document.
+      // Rule 4: Validate basic field types where practical.
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+                            && isValidStringIfPresent('email')
+                            && isValidStringIfPresent('displayName');
+      allow delete: if isOwner(userId);
+
+      // -----------------------------------------------------------------------
+      // TASKS
+      // -----------------------------------------------------------------------
+      match /tasks/{taskId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId)
+                              && isValidStringIfPresent('title')
+                              && isValidNumberIfPresent('riskScore')
+                              && isValidNumberIfPresent('progressPercentage');
+        allow delete: if isOwner(userId);
+
+        // Subtasks / Steps within a task
+        match /steps/{stepId} {
+          allow read: if isOwner(userId);
+          allow create, update: if isOwner(userId) && isValidStringIfPresent('title');
+          allow delete: if isOwner(userId);
+        }
+
+        // Historical snapshots of risk score recalculations
+        match /riskSnapshots/{snapshotId} {
+          allow read, write: if isOwner(userId);
+        }
+
+        // Calendar Focus Blocks scheduled for this task
+        match /focusBlocks/{blockId} {
+          allow read, write: if isOwner(userId);
+        }
+
+        // Emergency Rescue Mode action plans
+        match /rescuePlans/{rescuePlanId} {
+          allow read, write: if isOwner(userId);
+        }
+
+        // Progress evidence attachments or logs
+        match /progressEvidence/{evidenceId} {
+          allow read, write: if isOwner(userId);
+        }
+      }
+
+      // -----------------------------------------------------------------------
+      // INTEGRATIONS (e.g., Google OAuth, Calendar, Gmail)
+      // -----------------------------------------------------------------------
+      match /integrations/{integrationId} {
+        allow read, delete: if isOwner(userId);
+        // Rule 5, 6, 7: Prevent client SDKs from writing sensitive OAuth token fields directly.
+        // OAuth tokens (accessToken, refreshToken, idToken) should be written exclusively
+        // from trusted server-side API routes via the Firebase Admin SDK (which bypasses rules).
+        allow create, update: if isOwner(userId) &&
+          (!request.resource.data.keys().hasAny(['accessToken', 'refreshToken', 'idToken', 'tokenSecret', 'tokens']));
+      }
+
+      // -----------------------------------------------------------------------
+      // BEHAVIOR SIGNALS (Procrastination telemetry & analytics)
+      // -----------------------------------------------------------------------
+      match /behaviorSignals/{signalId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // -----------------------------------------------------------------------
+      // NOTIFICATIONS & REMINDERS
+      // -----------------------------------------------------------------------
+      match /notifications/{notificationId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      match /reminders/{reminderId} {
+        allow read, write: if isOwner(userId);
+      }
+
+      // -----------------------------------------------------------------------
+      // PUSH NOTIFICATION DEVICES (FCM Tokens)
+      // -----------------------------------------------------------------------
+      match /devices/{deviceId} {
+        allow read: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidStringIfPresent('fcmToken');
+        allow delete: if isOwner(userId);
+      }
+    }
+  }
+}
