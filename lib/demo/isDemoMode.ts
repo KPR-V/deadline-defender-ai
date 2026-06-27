@@ -1,0 +1,1 @@
+export { isDemoMode } from '../env';
