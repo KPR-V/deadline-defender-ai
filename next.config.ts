@@ -18,6 +18,7 @@ const nextConfig: NextConfig = {
     ],
   },
   output: 'standalone',
+  serverExternalPackages: ['firebase-admin', 'googleapis', 'google-auth-library'],
   transpilePackages: ['motion'],
 };
 
