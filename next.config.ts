@@ -17,8 +17,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ['firebase-admin', 'googleapis', 'google-auth-library'],
-  transpilePackages: ['motion'],
+  serverExternalPackages: ['googleapis', 'google-auth-library'],
+  transpilePackages: ['motion', 'firebase-admin', 'jose', 'jwks-rsa'],
 };
 
 export default nextConfig;
