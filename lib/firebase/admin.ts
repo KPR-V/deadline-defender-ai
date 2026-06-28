@@ -31,25 +31,40 @@ function initAdminApp() {
 // Use proxy with lazy initialization to avoid build-time errors and warnings on module load
 export const adminDb = new Proxy({} as ReturnType<typeof getFirestore>, {
   get: (target, prop) => {
+    if (prop === '__esModule' || prop === 'then' || typeof prop === 'symbol') return undefined;
     initAdminApp();
-    if (getApps().length === 0) throw new Error('Firebase Admin not initialized');
-    return (getFirestore(getApps()[0]) as any)[prop];
+    if (getApps().length === 0) {
+      return () => { throw new Error('Firebase Admin not initialized'); };
+    }
+    const instance = getFirestore(getApps()[0]);
+    const val = (instance as any)[prop];
+    return typeof val === 'function' ? val.bind(instance) : val;
   }
 });
 
 export const adminAuth = new Proxy({} as ReturnType<typeof getAuth>, {
   get: (target, prop) => {
+    if (prop === '__esModule' || prop === 'then' || typeof prop === 'symbol') return undefined;
     initAdminApp();
-    if (getApps().length === 0) throw new Error('Firebase Admin not initialized');
-    return (getAuth() as any)[prop];
+    if (getApps().length === 0) {
+      return () => { throw new Error('Firebase Admin not initialized'); };
+    }
+    const instance = getAuth();
+    const val = (instance as any)[prop];
+    return typeof val === 'function' ? val.bind(instance) : val;
   }
 });
 
 export const adminMessaging = new Proxy({} as ReturnType<typeof getMessaging>, {
   get: (target, prop) => {
+    if (prop === '__esModule' || prop === 'then' || typeof prop === 'symbol') return undefined;
     initAdminApp();
-    if (getApps().length === 0) throw new Error('Firebase Admin not initialized');
-    return (getMessaging() as any)[prop];
+    if (getApps().length === 0) {
+      return () => { throw new Error('Firebase Admin not initialized'); };
+    }
+    const instance = getMessaging();
+    const val = (instance as any)[prop];
+    return typeof val === 'function' ? val.bind(instance) : val;
   }
 });
 
