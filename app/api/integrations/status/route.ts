@@ -1,16 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getGoogleTokens } from '../../../../lib/server/googleTokenStore';
-import { adminAuth } from '../../../../lib/firebase/admin';
+import { verifyApiAuth } from '../../../../lib/firebase/apiAuth';
 
-export async function GET(request: Request) {
-  const authHeader = request.headers.get('Authorization');
-  if (!authHeader?.startsWith('Bearer ')) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  const idToken = authHeader.split('Bearer ')[1];
+export async function GET(request: NextRequest) {
   try {
-    const decodedToken = await adminAuth.verifyIdToken(idToken);
+    const decodedToken = await verifyApiAuth(request);
+    if (!decodedToken) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const userId = decodedToken.uid;
 
     const googleIntegration = await getGoogleTokens(userId);

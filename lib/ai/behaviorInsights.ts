@@ -12,11 +12,11 @@ Based on the following statistics, generate 3-4 short, punchy, friendly insights
 Make it sound encouraging but direct. Use bullet points. Each bullet should be 1 sentence.
 
 Data:
-- Reminder Response Rate: ${Math.round(stats.reminderResponseRate)}%
-- Focus Block Completion Rate: ${Math.round(stats.focusBlockCompletionRate)}%
-- Rescue Success Rate: ${Math.round(stats.rescueSuccessRate)}%
-- Completion Time of Day: Morning (${stats.completionTimeOfDay.morning}), Afternoon (${stats.completionTimeOfDay.afternoon}), Evening (${stats.completionTimeOfDay.evening}), Night (${stats.completionTimeOfDay.night})
-- Most delayed category counts: ${JSON.stringify(stats.categoryDelays)}
+- Reminder Response Rate: ${Math.round(stats.reminderResponseRate || 0)}%
+- Focus Block Completion Rate: ${Math.round(stats.focusBlockCompletionRate || 0)}%
+- Rescue Success Rate: ${Math.round(stats.rescueSuccessRate || 0)}%
+- Completion Time of Day: Morning (${stats.completionTimeOfDay?.morning ?? 0}), Afternoon (${stats.completionTimeOfDay?.afternoon ?? 0}), Evening (${stats.completionTimeOfDay?.evening ?? 0}), Night (${stats.completionTimeOfDay?.night ?? 0})
+- Most delayed category counts: ${JSON.stringify(stats.categoryDelays || {})}
 
 Example insights:
 - "You usually complete tasks at night, meaning you might be a night owl."

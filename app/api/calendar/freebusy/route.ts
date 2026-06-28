@@ -1,15 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getFreeBusy } from '../../../../lib/server/googleCalendar';
-import { adminAuth } from '../../../../lib/firebase/admin';
+import { verifyApiAuth } from '../../../../lib/firebase/apiAuth';
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const authHeader = request.headers.get('Authorization');
-    if (!authHeader?.startsWith('Bearer ')) {
+    const decodedToken = await verifyApiAuth(request);
+    if (!decodedToken) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const token = authHeader.split('Bearer ')[1];
-    const decodedToken = await adminAuth.verifyIdToken(token);
     const userId = decodedToken.uid;
 
     const { timeMin, timeMax, calendarIds } = await request.json();
