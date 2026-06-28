@@ -2,6 +2,8 @@
 
 **AI-Powered Deadline Risk & Procrastination Interceptor**
 
+📄 **Project Submission Description & Architecture Doc:** [View Google Doc](https://docs.google.com/document/d/1mXShyO9TtYxGj4MowhG9osKu8_O4Yd4MOb7tEdMINEw/edit?usp=sharing)
+
 Deadline Defender AI is an intelligent productivity companion designed to intercept procrastination before deadlines slip. Rather than passively listing tasks, it combines predictive risk analytics, natural language task parsing via Google Gemini 2.5 Flash, real Google Calendar schedule orchestration, automated Gmail deadline discovery, and an emergency Rescue Mode to ensure execution and secure partial credit when time runs short.
 
 ---

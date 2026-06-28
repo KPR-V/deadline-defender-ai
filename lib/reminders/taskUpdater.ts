@@ -43,7 +43,7 @@ export async function createTaskAndNotify(userId: string, taskData: Omit<Task, '
       title: 'Task Tracked',
       message,
       type,
-      intensity: reminderIntensity,
+      intensity: reminderIntensity || 'normal',
       status: 'unread',
       suggestedAction: newTaskData.riskLevel === 'critical' ? 'open_rescue' : 'start_now'
     };

@@ -3,9 +3,9 @@ import {
   doc,
   getDoc,
   getDocs,
-  setDoc,
-  addDoc,
-  updateDoc,
+  setDoc as fbSetDoc,
+  addDoc as fbAddDoc,
+  updateDoc as fbUpdateDoc,
   deleteDoc,
   query,
   orderBy,
@@ -27,6 +27,23 @@ import {
   ProgressEvidence,
 } from "../../types/task";
 import { Reminder } from "../../types/reminder";
+
+const removeUndefined = (obj: any): any => {
+  if (obj === null || typeof obj !== "object") return obj;
+  if (obj instanceof Timestamp || obj instanceof Date) return obj;
+  if (Array.isArray(obj)) return obj.map(removeUndefined);
+  const cleaned: any = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (value !== undefined) {
+      cleaned[key] = removeUndefined(value);
+    }
+  }
+  return cleaned;
+};
+
+const setDoc = (ref: any, data: any, opts?: any) => opts ? fbSetDoc(ref, removeUndefined(data), opts) : fbSetDoc(ref, removeUndefined(data));
+const addDoc = (ref: any, data: any) => fbAddDoc(ref, removeUndefined(data));
+const updateDoc = (ref: any, data: any) => fbUpdateDoc(ref, removeUndefined(data));
 
 // Helper to convert Firestore dates
 const toDate = (val: any): Date => {

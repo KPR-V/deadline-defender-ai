@@ -1,33 +1,35 @@
 import { env as clientEnv } from "../env";
 
+const cleanEnvVar = (val?: string) => val ? val.trim().replace(/^["']|["']$/g, "") : "";
+
 export const serverEnv = {
   ...clientEnv,
 
-  NODE_ENV: process.env.NODE_ENV || "development",
+  NODE_ENV: cleanEnvVar(process.env.NODE_ENV) || "development",
 
   FIREBASE_ADMIN_PROJECT_ID:
-    process.env.FIREBASE_PROJECT_ID ||
-    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ||
+    cleanEnvVar(process.env.FIREBASE_PROJECT_ID) ||
+    cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) ||
     "",
-  FIREBASE_CLIENT_EMAIL: process.env.FIREBASE_CLIENT_EMAIL || "",
+  FIREBASE_CLIENT_EMAIL: cleanEnvVar(process.env.FIREBASE_CLIENT_EMAIL),
   FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY
-    ? process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n")
+    ? cleanEnvVar(process.env.FIREBASE_PRIVATE_KEY).replace(/\\n/g, "\n")
     : "",
 
-  GEMINI_API_KEY: process.env.GEMINI_API_KEY || "",
-  GEMINI_MODEL: process.env.GEMINI_MODEL || "gemini-2.5-flash",
+  GEMINI_API_KEY: cleanEnvVar(process.env.GEMINI_API_KEY),
+  GEMINI_MODEL: cleanEnvVar(process.env.GEMINI_MODEL) || "gemini-2.5-flash",
 
-  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || "",
-  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET || "",
+  GOOGLE_CLIENT_ID: cleanEnvVar(process.env.GOOGLE_CLIENT_ID),
+  GOOGLE_CLIENT_SECRET: cleanEnvVar(process.env.GOOGLE_CLIENT_SECRET),
   GOOGLE_OAUTH_REDIRECT_URI:
-    process.env.GOOGLE_OAUTH_REDIRECT_URI ||
+    cleanEnvVar(process.env.GOOGLE_OAUTH_REDIRECT_URI) ||
     `${clientEnv.APP_URL}/api/auth/google/callback`,
 
   GOOGLE_CALENDAR_SCOPES:
-    process.env.GOOGLE_CALENDAR_SCOPES ||
+    cleanEnvVar(process.env.GOOGLE_CALENDAR_SCOPES) ||
     "https://www.googleapis.com/auth/calendar.freebusy https://www.googleapis.com/auth/calendar.events",
   GOOGLE_GMAIL_SCOPES:
-    process.env.GOOGLE_GMAIL_SCOPES ||
+    cleanEnvVar(process.env.GOOGLE_GMAIL_SCOPES) ||
     "https://www.googleapis.com/auth/gmail.readonly",
 };
 
