@@ -13,7 +13,7 @@ export const serverEnv = {
     "",
   FIREBASE_CLIENT_EMAIL: cleanEnvVar(process.env.FIREBASE_CLIENT_EMAIL),
   FIREBASE_PRIVATE_KEY: process.env.FIREBASE_PRIVATE_KEY
-    ? cleanEnvVar(process.env.FIREBASE_PRIVATE_KEY).replace(/\\n/g, "\n")
+    ? cleanEnvVar(process.env.FIREBASE_PRIVATE_KEY).replace(/\\n/g, "\n").replace(/\r/g, "")
     : "",
 
   GEMINI_API_KEY: cleanEnvVar(process.env.GEMINI_API_KEY),
