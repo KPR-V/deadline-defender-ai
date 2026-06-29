@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       .collection("users")
       .doc(user.uid)
       .collection("devices")
-      .doc(deviceId)
+      .doc(deviceId.replace(/[^a-zA-Z0-9_-]/g, '_'))
       .set(
         {
           fcmToken,

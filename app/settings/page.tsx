@@ -48,7 +48,7 @@ export default function SettingsPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${idToken}`
         },
-        body: JSON.stringify({ fcmToken: clientDeviceToken, deviceId: 'web_' + navigator.userAgent.slice(0, 20) })
+        body: JSON.stringify({ fcmToken: clientDeviceToken, deviceId: 'web_' + navigator.userAgent.replace(/[^a-zA-Z0-9]/g, '_').slice(0, 30) })
       });
       if (res.ok) {
         setPushMsg('✅ Browser notifications enabled successfully!');
