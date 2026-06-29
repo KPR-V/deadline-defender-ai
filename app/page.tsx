@@ -27,18 +27,22 @@ export default function LandingPage() {
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-slate-800 to-transparent" />
 
       {/* Navigation Header */}
-      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+      <header className="border-b border-white/10 bg-[#050505]/70 backdrop-blur-xl sticky top-0 z-50 relative">
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-gradient-to-br from-cyan-500 to-indigo-600 rounded-lg text-white shadow-md shadow-cyan-950/40">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-gradient-to-br from-cyan-500 via-indigo-500 to-purple-600 rounded-xl text-white shadow-lg shadow-cyan-500/20 animate-float">
               <Shield className="w-5 h-5" />
             </div>
             <div>
-              <span className="font-bold text-lg text-white tracking-tight block">
-                DEADLINE DEFENDER
+              <span className="font-bold text-lg text-white tracking-tight block flex items-center gap-2">
+                <span className="text-gradient-cyan font-extrabold">DEADLINE DEFENDER</span>
+                <span className="text-[9px] bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 border border-cyan-400/30 px-2 py-0.5 rounded-full uppercase font-mono font-bold tracking-widest">
+                  AI CORE
+                </span>
               </span>
-              <span className="text-[9px] text-cyan-400 font-bold tracking-widest uppercase block -mt-1 font-mono">
-                Last-Minute Life Saver
+              <span className="text-[10px] text-slate-400 font-bold tracking-widest uppercase block mt-0.5 font-mono">
+                Proactive Rescue & Risk Prediction Grid
               </span>
             </div>
           </div>

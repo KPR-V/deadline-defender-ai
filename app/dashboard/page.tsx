@@ -61,8 +61,9 @@ export default function Dashboard() {
   const [showManualForm, setShowManualForm] = useState(false);
   const [submittingManual, setSubmittingManual] = useState(false);
 
-  // Active view tab
+  // Active view tab & risk filter
   const [viewTab, setViewTab] = useState<"columns" | "upcoming">("columns");
+  const [riskFilter, setRiskFilter] = useState<"all" | "critical" | "danger" | "warning" | "safe">("all");
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -553,34 +554,85 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* MIDDLE BAR: View Toggle & Manual Button */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-          <div className="flex items-center gap-2.5 bg-[#0A0A0A] border border-white/10 p-1 rounded-lg w-fit">
-            <button
-              onClick={() => setViewTab("columns")}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all ${
-                viewTab === "columns"
-                  ? "bg-[#111] text-cyan-400 shadow-md"
-                  : "text-gray-500 hover:text-white"
-              }`}
-            >
-              Columns Grid
-            </button>
-            <button
-              onClick={() => setViewTab("upcoming")}
-              className={`px-3 py-1.5 rounded-md text-xs font-bold font-mono transition-all ${
-                viewTab === "upcoming"
-                  ? "bg-[#111] text-cyan-400 shadow-md"
-                  : "text-gray-500 hover:text-white"
-              }`}
-            >
-              Timeline Chronological
-            </button>
+        {/* MIDDLE BAR: View Toggle, Filter Pills & Manual Button */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-1 bg-white/[0.03] border border-white/10 p-1 rounded-xl">
+              <button
+                onClick={() => setViewTab("columns")}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-300 ${
+                  viewTab === "columns"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shadow-[0_0_12px_rgba(6,182,212,0.2)]"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Risk Command Grid
+              </button>
+              <button
+                onClick={() => setViewTab("upcoming")}
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold font-mono transition-all duration-300 ${
+                  viewTab === "upcoming"
+                    ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 shadow-[0_0_12px_rgba(6,182,212,0.2)]"
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                Chronological Timeline
+              </button>
+            </div>
+
+            {viewTab === "columns" && (
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+                <button
+                  onClick={() => setRiskFilter("all")}
+                  className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all ${
+                    riskFilter === "all" ? "bg-white/20 text-white shadow-md" : "bg-white/5 text-slate-400 hover:bg-white/10"
+                  }`}
+                >
+                  All ({activeTasks.length})
+                </button>
+                <button
+                  onClick={() => setRiskFilter("critical")}
+                  className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1 ${
+                    riskFilter === "critical" ? "bg-red-500/30 border border-red-500/50 text-red-300 shadow-[0_0_10px_rgba(239,68,68,0.3)]" : "bg-red-950/20 text-red-400 hover:bg-red-950/40 border border-red-500/10"
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+                  Critical ({criticalTasks.length})
+                </button>
+                <button
+                  onClick={() => setRiskFilter("danger")}
+                  className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1 ${
+                    riskFilter === "danger" ? "bg-orange-500/30 border border-orange-500/50 text-orange-300 shadow-[0_0_10px_rgba(249,115,22,0.3)]" : "bg-orange-950/20 text-orange-400 hover:bg-orange-950/40 border border-orange-500/10"
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
+                  Danger ({dangerTasks.length})
+                </button>
+                <button
+                  onClick={() => setRiskFilter("warning")}
+                  className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1 ${
+                    riskFilter === "warning" ? "bg-amber-500/30 border border-amber-500/50 text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.3)]" : "bg-amber-950/20 text-amber-400 hover:bg-amber-950/40 border border-amber-500/10"
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  Warning ({warningTasks.length})
+                </button>
+                <button
+                  onClick={() => setRiskFilter("safe")}
+                  className={`px-3 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1 ${
+                    riskFilter === "safe" ? "bg-emerald-500/30 border border-emerald-500/50 text-emerald-300 shadow-[0_0_10px_rgba(16,185,129,0.3)]" : "bg-emerald-950/20 text-emerald-400 hover:bg-emerald-950/40 border border-emerald-500/10"
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  Safe ({safeTasks.length})
+                </button>
+              </div>
+            )}
           </div>
 
           <button
             onClick={() => setShowManualForm(!showManualForm)}
-            className="flex items-center justify-center gap-1.5 bg-gradient-to-r from-cyan-600 to-indigo-600 hover:from-cyan-500 hover:to-indigo-500 text-white font-bold py-2 px-4 rounded-lg text-xs font-mono uppercase tracking-wider transition-all"
+            className="flex items-center justify-center gap-1.5 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 hover:from-cyan-400 hover:to-purple-500 text-white font-bold py-2 px-4 rounded-xl text-xs font-mono uppercase tracking-wider transition-all duration-300 shadow-lg shadow-cyan-500/20 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)]"
           >
             <Plus className="w-4 h-4" />
             Manual Capture
@@ -616,122 +668,140 @@ export default function Dashboard() {
         ) : (
           <div>
             {/* COLUMN VIEWS TAB */}
+            {/* COLUMN OR FILTERED GRID VIEW */}
             {viewTab === "columns" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                {/* Column: SAFE */}
-                <div id="col-safe" className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-emerald-500/30 pb-2">
-                    <span className="text-xs font-bold font-mono uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                      Safe Index ({safeTasks.length})
-                    </span>
-                    <span className="text-[10px] font-mono text-slate-500">
-                      0-30
-                    </span>
+              riskFilter !== "all" ? (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between border-b border-white/10 pb-3">
+                    <h3 className="text-sm font-bold font-mono uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                      Showing {riskFilter.toUpperCase()} Index
+                    </h3>
+                    <button
+                      onClick={() => setRiskFilter("all")}
+                      className="text-xs font-mono text-slate-400 hover:text-white underline"
+                    >
+                      Return to All Columns
+                    </button>
                   </div>
-                  {safeTasks.length === 0 ? (
-                    <p className="text-[10px] text-slate-600 font-mono italic p-4 text-center border border-dashed border-slate-900 rounded-lg">
-                      No safe tasks index.
-                    </p>
-                  ) : (
-                    <div className="space-y-4">
-                      {safeTasks.map((task) => (
-                        <TaskCard
-                          key={task.id}
-                          task={task}
-                          onQuickComplete={handleQuickComplete}
-                        />
-                      ))}
-                    </div>
-                  )}
+                  {(() => {
+                    const filteredTasks = activeTasks.filter(t => t.riskLevel === riskFilter);
+                    if (filteredTasks.length === 0) {
+                      return (
+                        <div className="glass-card p-12 text-center rounded-2xl border border-dashed border-white/10">
+                          <p className="text-sm font-mono text-slate-400">No active tasks in {riskFilter.toUpperCase()} risk tier.</p>
+                        </div>
+                      );
+                    }
+                    return (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredTasks.map(task => (
+                          <TaskCard key={task.id} task={task} onQuickComplete={handleQuickComplete} />
+                        ))}
+                      </div>
+                    );
+                  })()}
                 </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-start">
+                  {/* Column: SAFE */}
+                  <div id="col-safe" className="glass-card p-4 rounded-2xl border border-emerald-500/20 max-h-[640px] flex flex-col">
+                    <div className="flex items-center justify-between border-b border-emerald-500/30 pb-3 mb-3 sticky top-0 bg-transparent z-10">
+                      <span className="text-xs font-bold font-mono uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+                        Safe ({safeTasks.length})
+                      </span>
+                      <span className="text-[10px] font-mono bg-emerald-950/40 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/20">
+                        0-30
+                      </span>
+                    </div>
+                    <div className="overflow-y-auto pr-1 space-y-4 flex-grow custom-scrollbar">
+                      {safeTasks.length === 0 ? (
+                        <p className="text-[11px] text-slate-500 font-mono italic p-6 text-center border border-dashed border-white/5 rounded-xl">
+                          No safe tasks logged.
+                        </p>
+                      ) : (
+                        safeTasks.map((task) => (
+                          <TaskCard key={task.id} task={task} onQuickComplete={handleQuickComplete} />
+                        ))
+                      )}
+                    </div>
+                  </div>
 
-                {/* Column: WARNING */}
-                <div id="col-warning" className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-amber-500/30 pb-2">
-                    <span className="text-xs font-bold font-mono uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                      Warning Index ({warningTasks.length})
-                    </span>
-                    <span className="text-[10px] font-mono text-slate-500">
-                      31-60
-                    </span>
-                  </div>
-                  {warningTasks.length === 0 ? (
-                    <p className="text-[10px] text-slate-600 font-mono italic p-4 text-center border border-dashed border-slate-900 rounded-lg">
-                      No warnings logged.
-                    </p>
-                  ) : (
-                    <div className="space-y-4">
-                      {warningTasks.map((task) => (
-                        <TaskCard
-                          key={task.id}
-                          task={task}
-                          onQuickComplete={handleQuickComplete}
-                        />
-                      ))}
+                  {/* Column: WARNING */}
+                  <div id="col-warning" className="glass-card p-4 rounded-2xl border border-amber-500/20 max-h-[640px] flex flex-col">
+                    <div className="flex items-center justify-between border-b border-amber-500/30 pb-3 mb-3 sticky top-0 bg-transparent z-10">
+                      <span className="text-xs font-bold font-mono uppercase tracking-wider text-amber-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                        Warning ({warningTasks.length})
+                      </span>
+                      <span className="text-[10px] font-mono bg-amber-950/40 text-amber-300 px-2 py-0.5 rounded border border-amber-500/20">
+                        31-60
+                      </span>
                     </div>
-                  )}
-                </div>
+                    <div className="overflow-y-auto pr-1 space-y-4 flex-grow custom-scrollbar">
+                      {warningTasks.length === 0 ? (
+                        <p className="text-[11px] text-slate-500 font-mono italic p-6 text-center border border-dashed border-white/5 rounded-xl">
+                          No warnings active.
+                        </p>
+                      ) : (
+                        warningTasks.map((task) => (
+                          <TaskCard key={task.id} task={task} onQuickComplete={handleQuickComplete} />
+                        ))
+                      )}
+                    </div>
+                  </div>
 
-                {/* Column: DANGER */}
-                <div id="col-danger" className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-orange-500/30 pb-2">
-                    <span className="text-xs font-bold font-mono uppercase tracking-wider text-orange-400 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
-                      Danger Alert ({dangerTasks.length})
-                    </span>
-                    <span className="text-[10px] font-mono text-slate-500">
-                      61-80
-                    </span>
-                  </div>
-                  {dangerTasks.length === 0 ? (
-                    <p className="text-[10px] text-slate-600 font-mono italic p-4 text-center border border-dashed border-slate-900 rounded-lg">
-                      All systems clear of danger.
-                    </p>
-                  ) : (
-                    <div className="space-y-4">
-                      {dangerTasks.map((task) => (
-                        <TaskCard
-                          key={task.id}
-                          task={task}
-                          onQuickComplete={handleQuickComplete}
-                        />
-                      ))}
+                  {/* Column: DANGER */}
+                  <div id="col-danger" className="glass-card p-4 rounded-2xl border border-orange-500/20 max-h-[640px] flex flex-col">
+                    <div className="flex items-center justify-between border-b border-orange-500/30 pb-3 mb-3 sticky top-0 bg-transparent z-10">
+                      <span className="text-xs font-bold font-mono uppercase tracking-wider text-orange-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse shadow-[0_0_8px_rgba(249,115,22,0.8)]" />
+                        Danger ({dangerTasks.length})
+                      </span>
+                      <span className="text-[10px] font-mono bg-orange-950/40 text-orange-300 px-2 py-0.5 rounded border border-orange-500/20">
+                        61-80
+                      </span>
                     </div>
-                  )}
-                </div>
+                    <div className="overflow-y-auto pr-1 space-y-4 flex-grow custom-scrollbar">
+                      {dangerTasks.length === 0 ? (
+                        <p className="text-[11px] text-slate-500 font-mono italic p-6 text-center border border-dashed border-white/5 rounded-xl">
+                          Systems clear of danger.
+                        </p>
+                      ) : (
+                        dangerTasks.map((task) => (
+                          <TaskCard key={task.id} task={task} onQuickComplete={handleQuickComplete} />
+                        ))
+                      )}
+                    </div>
+                  </div>
 
-                {/* Column: CRITICAL */}
-                <div id="col-critical" className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-red-500/30 pb-2 animate-pulse">
-                    <span className="text-xs font-bold font-mono uppercase tracking-wider text-red-500 flex items-center gap-1.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
-                      Critical Threats ({criticalTasks.length})
-                    </span>
-                    <span className="text-[10px] font-mono text-slate-500">
-                      81-100
-                    </span>
+                  {/* Column: CRITICAL */}
+                  <div id="col-critical" className="glass-card p-4 rounded-2xl border border-red-500/30 max-h-[640px] flex flex-col shadow-[0_0_20px_rgba(239,68,68,0.1)]">
+                    <div className="flex items-center justify-between border-b border-red-500/30 pb-3 mb-3 sticky top-0 bg-transparent z-10">
+                      <span className="text-xs font-bold font-mono uppercase tracking-wider text-red-400 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-red-500 animate-ping shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                        Critical ({criticalTasks.length})
+                      </span>
+                      <span className="text-[10px] font-mono bg-red-950/40 text-red-300 px-2 py-0.5 rounded border border-red-500/20">
+                        81-100
+                      </span>
+                    </div>
+                    <div className="overflow-y-auto pr-1 space-y-4 flex-grow custom-scrollbar">
+                      {criticalTasks.length === 0 ? (
+                        <div className="p-6 text-center border border-dashed border-white/5 rounded-xl">
+                          <p className="text-[11px] text-slate-500 font-mono leading-relaxed uppercase">
+                            Shields solid. <br /> No critical threats.
+                          </p>
+                        </div>
+                      ) : (
+                        criticalTasks.map((task) => (
+                          <TaskCard key={task.id} task={task} onQuickComplete={handleQuickComplete} />
+                        ))
+                      )}
+                    </div>
                   </div>
-                  {criticalTasks.length === 0 ? (
-                    <div className="bg-slate-950/20 border border-dashed border-slate-800 p-6 rounded-xl flex flex-col items-center justify-center text-center">
-                      <p className="text-[10px] text-slate-500 font-mono leading-relaxed uppercase">
-                        Shields solid. <br /> No critical threats active.
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {criticalTasks.map((task) => (
-                        <TaskCard
-                          key={task.id}
-                          task={task}
-                          onQuickComplete={handleQuickComplete}
-                        />
-                      ))}
-                    </div>
-                  )}
                 </div>
-              </div>
+              )
             )}
 
             {/* CHRONOLOGICAL VIEW TAB */}

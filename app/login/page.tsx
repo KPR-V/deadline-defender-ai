@@ -116,13 +116,13 @@ function LoginContent() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12 relative overflow-hidden">
       {/* Decorative blurred rings */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] bg-cyan-500/10 rounded-full blur-3xl -z-10 animate-pulse" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[450px] bg-gradient-to-tr from-cyan-500/15 via-indigo-500/15 to-purple-500/15 rounded-full blur-3xl -z-10 animate-pulse-subtle pointer-events-none" />
 
-      <div className="w-full max-w-md bg-slate-900/65 border border-slate-800 rounded-xl p-8 shadow-2xl backdrop-blur-md relative">
+      <div className="w-full max-w-md glass-card rounded-2xl p-8 shadow-2xl relative border border-cyan-500/20 hover:border-cyan-500/40 transition-all duration-500">
         {/* Brand */}
         <div className="flex flex-col items-center text-center space-y-2 mb-8">
-          <div className="p-3 bg-gradient-to-br from-cyan-500 to-indigo-600 rounded-xl text-white shadow-lg shadow-cyan-950/40">
-            <Shield className="w-6 h-6 animate-pulse" />
+          <div className="p-3 bg-gradient-to-br from-cyan-500 via-indigo-500 to-purple-600 rounded-2xl text-white shadow-lg shadow-cyan-500/20 animate-float">
+            <Shield className="w-7 h-7" />
           </div>
           <h2 className="text-xl font-bold tracking-tight text-white uppercase font-sans">
             Deadline Defender System

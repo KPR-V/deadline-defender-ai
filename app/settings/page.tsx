@@ -207,9 +207,10 @@ export default function SettingsPage() {
   }
 
   return (
-    <div id="settings-view" className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between">
+    <div id="settings-view" className="min-h-screen bg-transparent text-gray-200 flex flex-col justify-between">
       {/* Header Panel */}
-      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-white/10 bg-[#050505]/70 backdrop-blur-xl sticky top-0 z-40 relative">
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link
             href="/dashboard"
@@ -220,7 +221,7 @@ export default function SettingsPage() {
           </Link>
 
           <div>
-            <span className="text-[10px] bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded font-mono font-bold">
+            <span className="text-[10px] bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 border border-cyan-400/30 px-2.5 py-1 rounded-full font-mono font-bold uppercase tracking-wider shadow-[0_0_12px_rgba(6,182,212,0.2)]">
               SYSTEM CONFIG
             </span>
           </div>

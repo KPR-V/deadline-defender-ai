@@ -271,8 +271,9 @@ export default function InboxDeadlinesPage() {
   const selectedCount = Object.keys(selectedIds).filter((id) => selectedIds[id]).length;
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+    <div className="min-h-screen bg-transparent text-gray-200 flex flex-col">
+      <header className="border-b border-white/10 bg-[#050505]/70 backdrop-blur-xl sticky top-0 z-40 relative">
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link
             href="/dashboard"
@@ -281,8 +282,8 @@ export default function InboxDeadlinesPage() {
             <ArrowLeft className="w-4 h-4" />
             BACK TO DASHBOARD
           </Link>
-          <div className="flex items-center gap-2 text-cyan-500 font-mono text-sm font-bold tracking-widest">
-            <Mail className="w-5 h-5" />
+          <div className="flex items-center gap-2 text-gradient-cyan font-mono text-sm font-bold tracking-widest">
+            <Mail className="w-5 h-5 text-cyan-400" />
             REAL GMAIL DEADLINE INTEGRATION
           </div>
         </div>
@@ -292,7 +293,7 @@ export default function InboxDeadlinesPage() {
         {/* Left Column: Connection & Search & Emails List */}
         <div className="lg:col-span-6 flex flex-col gap-6">
           {/* Connection Status Section */}
-          <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-5 flex items-center justify-between">
+          <div className="glass-card rounded-2xl p-5 flex items-center justify-between border border-cyan-500/20">
             <div className="flex items-center gap-3">
               <div
                 className={`w-3 h-3 rounded-full ${

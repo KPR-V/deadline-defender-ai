@@ -345,7 +345,7 @@ export default function RescueMode({ params }: PageProps) {
   return (
     <div
       id="rescue-view"
-      className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between"
+      className="min-h-screen bg-transparent text-gray-200 flex flex-col justify-between"
     >
       {/* HEADER: Alarm Alert Red */}
       <div className="bg-gradient-to-r from-red-950 via-red-900 to-red-950 border-b border-red-500/30 px-6 py-4 flex items-center justify-between sticky top-0 z-50">

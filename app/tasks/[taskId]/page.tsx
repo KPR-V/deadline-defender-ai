@@ -319,10 +319,11 @@ export default function TaskDetail({ params }: PageProps) {
   return (
     <div
       id="task-detail-view"
-      className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between"
+      className="min-h-screen bg-transparent text-gray-200 flex flex-col justify-between"
     >
       {/* Header Panel */}
-      <header className="border-b border-slate-900 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-white/10 bg-[#050505]/70 backdrop-blur-xl sticky top-0 z-40 relative">
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link
             href="/dashboard"
