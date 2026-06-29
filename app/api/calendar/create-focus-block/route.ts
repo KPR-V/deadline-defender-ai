@@ -35,14 +35,22 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Focus block is already accepted' }, { status: 400 });
     }
 
+    const toISO = (val: any) => {
+      if (typeof val === 'string') return new Date(val).toISOString();
+      if (val?.toDate) return val.toDate().toISOString();
+      if (val?._seconds) return new Date(val._seconds * 1000).toISOString();
+      if (val?.seconds) return new Date(val.seconds * 1000).toISOString();
+      return new Date(val).toISOString();
+    };
+
     const eventDetails = {
       summary: `Focus: ${task.title}`,
       description: `Created by Deadline Defender AI.
 Task: ${task.title}
 Risk: ${task.riskScore}/100
 First action: ${task.firstUsefulAction || 'None specified'}`,
-      start: block.start,
-      end: block.end,
+      start: toISO(block.start),
+      end: toISO(block.end),
     };
 
     let calendarEvent;
@@ -66,6 +74,6 @@ First action: ${task.firstUsefulAction || 'None specified'}`,
 
   } catch (error: any) {
     console.error('Create focus block error:', error);
-    return NextResponse.json({ error: 'Failed to create focus block event' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Failed to create focus block event' }, { status: 500 });
   }
 }

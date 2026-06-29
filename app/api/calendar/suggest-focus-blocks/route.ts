@@ -29,8 +29,16 @@ export async function POST(request: Request) {
 
     // Get busy data from now to deadline
     const now = new Date();
-    const deadline = new Date(task.deadline);
+    const rawDeadline = task.deadline || task.dueDate;
+    const deadline = rawDeadline?.toDate ? rawDeadline.toDate() :
+                     rawDeadline?._seconds ? new Date(rawDeadline._seconds * 1000) :
+                     rawDeadline?.seconds ? new Date(rawDeadline.seconds * 1000) :
+                     new Date(rawDeadline);
     
+    if (!rawDeadline || isNaN(deadline.getTime())) {
+      return NextResponse.json({ error: 'Task has an invalid or missing deadline.' }, { status: 400 });
+    }
+
     if (now >= deadline) {
       return NextResponse.json({ suggestions: [], message: 'Task is already past deadline.' });
     }
@@ -90,6 +98,6 @@ export async function POST(request: Request) {
 
   } catch (error: any) {
     console.error('Suggest focus blocks error:', error);
-    return NextResponse.json({ error: 'Failed to suggest focus blocks' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Failed to suggest focus blocks' }, { status: 500 });
   }
 }
