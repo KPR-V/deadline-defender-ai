@@ -434,22 +434,23 @@ export default function Dashboard() {
       className="min-h-screen bg-[#050505] text-gray-200 flex flex-col justify-between"
     >
       {/* Header Panel */}
-      <header className="border-b border-white/10 bg-[#050505]/80 backdrop-blur-md sticky top-0 z-40">
+      <header className="border-b border-white/10 bg-[#050505]/70 backdrop-blur-xl sticky top-0 z-40 relative">
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent"></div>
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 bg-gradient-to-br from-cyan-500 to-indigo-600 rounded-lg text-white shadow-md shadow-cyan-950/30">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-gradient-to-br from-cyan-500 via-indigo-500 to-purple-600 rounded-xl text-white shadow-lg shadow-cyan-500/20 animate-float">
               <Shield className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="font-bold text-base text-white tracking-tight flex items-center gap-1.5 leading-none">
-                DEADLINE DEFENDER
-                <span className="text-[9px] bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-1.5 py-0.5 rounded uppercase font-mono font-bold font-semibold tracking-wider">
-                  MVP
+              <h1 className="font-bold text-lg text-white tracking-tight flex items-center gap-2 leading-none">
+                <span className="text-gradient-cyan font-extrabold">DEADLINE DEFENDER</span>
+                <span className="text-[10px] bg-gradient-to-r from-cyan-500/20 to-purple-500/20 text-cyan-300 border border-cyan-400/30 px-2 py-0.5 rounded-full uppercase font-mono font-bold tracking-widest shadow-[0_0_12px_rgba(6,182,212,0.3)] animate-pulse-subtle">
+                  PRO AI
                 </span>
               </h1>
-              <span className="text-[9px] text-slate-400 font-mono block mt-1 uppercase">
-                Logged in as {user?.displayName || "Commander"} (
-                {user?.isDemo ? "Demo Mode" : "Account"})
+              <span className="text-[10px] text-slate-400 font-mono flex items-center gap-1.5 mt-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping inline-block"></span>
+                Logged in as <strong className="text-slate-200">{user?.displayName || "Commander"}</strong> ({user?.isDemo ? "Demo Command Grid" : "Active Defense System"})
               </span>
             </div>
           </div>
@@ -460,25 +461,25 @@ export default function Dashboard() {
               <button
                 onClick={handleSeed}
                 disabled={seeding}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 border border-cyan-500/30 hover:border-cyan-500/60 bg-cyan-950/20 hover:bg-cyan-950/40 text-xs font-mono font-bold text-cyan-400 rounded-lg transition-all disabled:opacity-40"
+                className="flex items-center gap-1.5 px-4 py-2 border border-cyan-500/40 hover:border-cyan-400 bg-gradient-to-r from-cyan-950/40 to-indigo-950/40 hover:from-cyan-900/60 hover:to-indigo-900/60 text-xs font-mono font-bold text-cyan-300 rounded-xl transition-all duration-300 shadow-md hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] disabled:opacity-40"
               >
                 {seeding ? (
-                  <Clock className="w-3.5 h-3.5 animate-spin" />
+                  <Clock className="w-3.5 h-3.5 animate-spin text-cyan-400" />
                 ) : (
-                  <Database className="w-3.5 h-3.5" />
+                  <Database className="w-3.5 h-3.5 text-cyan-400" />
                 )}
-                {seeding ? "Seeding..." : "Reset Demo Data"}
+                {seeding ? "Seeding Grid..." : "Reset Demo Data"}
               </button>
             )}
             <button
               onClick={() => router.push("/settings")}
-              className="px-3.5 py-1.5 border border-white/10 hover:border-white/20 bg-[#0E0E0E] hover:bg-[#111] text-xs font-mono font-bold text-gray-300 rounded-lg transition-all"
+              className="px-4 py-2 border border-white/10 hover:border-white/20 bg-white/[0.03] hover:bg-white/[0.08] text-xs font-mono font-bold text-gray-300 rounded-xl transition-all duration-300 hover:text-white backdrop-blur-md"
             >
               Preferences
             </button>
             <button
               onClick={logout}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-bold text-red-400 hover:text-red-300 bg-red-950/20 border border-red-900/30 hover:border-red-950/50 rounded-lg transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-mono font-bold text-red-400 hover:text-red-300 bg-red-950/20 border border-red-900/30 hover:border-red-500/40 rounded-xl transition-all duration-300 hover:shadow-[0_0_15px_rgba(248,113,113,0.2)]"
             >
               <LogOut className="w-3.5 h-3.5" />
               Disconnect

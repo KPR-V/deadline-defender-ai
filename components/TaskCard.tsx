@@ -23,15 +23,15 @@ export default function TaskCard({ task, onQuickComplete }: TaskCardProps) {
   return (
     <div
       id={`task-card-${task.id}`}
-      className={`bg-[#0E0E0E] border rounded-xl p-5 shadow-lg relative hover:border-white/20 transition-all duration-300 flex flex-col justify-between ${
+      className={`glass-card rounded-2xl p-6 relative flex flex-col justify-between group overflow-hidden ${
         isCritical 
-          ? 'border-red-500/20 bg-gradient-to-br from-red-950/10 to-[#111]' 
-          : 'border-white/10'
+          ? 'border-red-500/40 bg-gradient-to-br from-red-950/30 via-[#121218]/80 to-[#121218] shadow-[0_0_25px_rgba(239,68,68,0.15)] hover:border-red-400' 
+          : 'border-white/10 hover:border-cyan-500/40'
       }`}
     >
       {/* Risk background pulse for Critical tasks */}
       {isCritical && (
-        <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full blur-2xl -z-10 animate-pulse" />
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-red-500/15 rounded-full blur-3xl -z-10 animate-pulse-subtle pointer-events-none" />
       )}
 
       {/* TOP: Category and Status */}

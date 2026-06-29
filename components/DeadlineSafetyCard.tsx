@@ -52,10 +52,12 @@ export default function DeadlineSafetyCard({
   return (
     <div
       id="deadline-safety-card"
-      className="bg-[#0E0E0E] border border-white/10 rounded-xl p-6 shadow-xl relative overflow-hidden"
+      className="glass-card rounded-2xl p-6 shadow-2xl relative overflow-hidden group border border-cyan-500/20 hover:border-cyan-400/50"
     >
+      {/* Decorative ambient background glow */}
+      <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl -z-10 pointer-events-none group-hover:bg-cyan-500/20 transition-all duration-500" />
       {/* Decorative pulse line */}
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_rgba(6,182,212,0.8)] animate-pulse-subtle" />
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
         {/* Left Side: Large Gauge */}
