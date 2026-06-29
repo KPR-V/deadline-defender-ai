@@ -41,9 +41,13 @@ export default function SettingsPage() {
       const swUrl = `/firebase-messaging-sw.js?apiKey=${encodeURIComponent(env.FIREBASE_API_KEY)}&projectId=${encodeURIComponent(env.FIREBASE_PROJECT_ID)}&messagingSenderId=${encodeURIComponent(env.FIREBASE_MESSAGING_SENDER_ID)}&appId=${encodeURIComponent(env.FIREBASE_APP_ID)}`;
       await navigator.serviceWorker.register(swUrl);
       const clientDeviceToken = 'web_push_' + crypto.randomUUID();
+      const idToken = user ? await user.getIdToken() : '';
       const res = await fetch('/api/notifications/register-device', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`
+        },
         body: JSON.stringify({ fcmToken: clientDeviceToken, deviceId: 'web_' + navigator.userAgent.slice(0, 20) })
       });
       if (res.ok) {
@@ -63,7 +67,13 @@ export default function SettingsPage() {
   const handleTestNotification = async () => {
     try {
       setPushStatus('testing');
-      const res = await fetch('/api/notifications/send-test', { method: 'POST' });
+      const idToken = user ? await user.getIdToken() : '';
+      const res = await fetch('/api/notifications/send-test', { 
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${idToken}`
+        }
+      });
       const data = await res.json();
       if (res.ok) {
         setPushMsg('✅ Test notification sent! Check your notification center.');
